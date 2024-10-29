@@ -163,11 +163,11 @@ export class CrocPoolView {
         return this.sendCmd(calldata)
     }
 
-    async burnAmbientAll (limits: PriceRange, opts?: CrocLpOpts): Promise<TransactionResponse> {
+    async burnAmbientAll (limits: PriceRange, opts?: CrocLpOpts, txArgs?: any): Promise<TransactionResponse> {
         let [lowerBound, upperBound] = await this.transformLimits(limits)
         const calldata = (await this.makeEncoder()).encodeBurnAmbientAll
             (lowerBound, upperBound, this.maskSurplusFlag(opts))
-        return this.sendCmd(calldata)
+        return this.sendCmd(calldata, txArgs)
     }
 
     async burnRangeLiq (liq: bigint, range: TickRange, limits: PriceRange, opts?: CrocLpOpts):
@@ -187,7 +187,7 @@ export class CrocPoolView {
         return this.sendCmd(calldata)
     }
 
-    private async sendCmd (calldata: string, txArgs?: { value?: bigint }):
+    private async sendCmd (calldata: string, txArgs?: any):
         Promise<TransactionResponse> {
         let cntx = await this.context
         if (txArgs === undefined) { txArgs = {} }
